@@ -13,20 +13,19 @@
       .sticky_layout
         if showToc
           include ./card_post_toc.pug
-        !=partial('includes/widget/card_weibo', {}, {cache: true})
+        if page.series
+          include ./card_post_series.pug
         !=partial('includes/widget/card_recent_post', {}, {cache: true})
         !=partial('includes/widget/card_ad', {}, {cache: true})
   else
     //- page
     !=partial('includes/widget/card_author', {}, {cache: true})
     !=partial('includes/widget/card_announcement', {}, {cache: true})
-    !=partial('includes/widget/card_top_self', {}, {cache: true})      
+    !=partial('includes/widget/card_top_self', {}, {cache: true})
 
     .sticky_layout
       if showToc
         include ./card_post_toc.pug
-      !=partial('includes/widget/card_friend_link', {}, {cache: true})
-      !=partial('includes/widget/card_weibo', {}, {cache: true})
       !=partial('includes/widget/card_recent_post', {}, {cache: true})
       !=partial('includes/widget/card_ad', {}, {cache: true})
       !=partial('includes/widget/card_newest_comment', {}, {cache: true})

@@ -15,7 +15,7 @@ script.
     }
 
     const getComment = () => {
-      fetch('https://disqus.com/api/3.0/forums/listPosts.json?forum=!{forum}&related=thread&limit=!{theme.newest_comments.limit}&api_key=!{apiKey}')
+      fetch('https://disqus.com/api/3.0/forums/listPosts.json?forum=!{forum}&related=thread&limit=!{theme.aside.card_newest_comments.limit}&api_key=!{apiKey}')
         .then(response => response.json())
         .then(data => {
           const disqusArray = data.response.map(item => {
@@ -28,11 +28,11 @@ script.
             }
           })
 
-          saveToLocal.set('disqus-newest-comments', JSON.stringify(disqusArray), !{theme.newest_comments.storage}/(60*24))
+          btf.saveToLocal.set('disqus-newest-comments', JSON.stringify(disqusArray), !{theme.aside.card_newest_comments.storage}/(60*24))
           generateHtml(disqusArray)
         }).catch(e => {
           const $dom = document.querySelector('#card-newest-comments .aside-list')
-          $dom.innerHTML= "!{_p('aside.card_newest_comments.error')}"
+          $dom.textContent= "!{_p('aside.card_newest_comments.error')}"
         })
     }
 
@@ -43,7 +43,7 @@ script.
         for (let i = 0; i < array.length; i++) {
           result += '<div class=\'aside-list-item\'>'
 
-          if (!{theme.newest_comments.avatar}) {
+          if (!{theme.aside.card_newest_comments.avatar}) {
             const name = '!{theme.lazyload.enable ? "data-lazy-src" : "src"}'
             result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
           }
@@ -58,14 +58,14 @@ script.
       }
 
       let $dom = document.querySelector('#card-newest-comments .aside-list')
-      $dom.innerHTML= result
+      $dom && ($dom.innerHTML= result)
       window.lazyLoadInstance && window.lazyLoadInstance.update()
       window.pjax && window.pjax.refresh($dom)
     }
 
     const newestCommentInit = () => {
       if (document.querySelector('#card-newest-comments .aside-list')) {
-        const data = saveToLocal.get('disqus-newest-comments')
+        const data = btf.saveToLocal.get('disqus-newest-comments')
         if (data) {
           generateHtml(JSON.parse(data))
         } else {
@@ -75,7 +75,7 @@ script.
     }
 
     newestCommentInit()
-    document.addEventListener('pjax:complete', newestCommentInit)
+    btf.addGlobalFn('pjaxComplete', newestCommentInit, 'disqus_newestComment')
   })
 
 

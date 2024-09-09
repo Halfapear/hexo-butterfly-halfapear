@@ -78,8 +78,8 @@
         border-color: var(--pseudo-hover)
 
     &-time
-      color: $theme-meta-color
-      font-size: 95%
+      color: var(--card-meta)
+      font-size: .85em
 
       time
         padding-left: 6px
@@ -88,7 +88,7 @@
     &-title
       @extend .limit-more-line
       color: var(--font-color)
-      font-size: 1.2em
+      font-size: 1.05em
       transition: all .3s
       -webkit-line-clamp: 2
 
@@ -97,12 +97,16 @@
         transform: translateX(10px)
 
     &-img
-      overflow: hidden;
-      width: 120px;
-      height: 120px;
-      border-radius: 12px;
+      overflow: hidden
+      width: 100px
+      height: 70px
+      addBorderRadius()
 
-      img
+      +maxWidth768()
+        width: 70px
+        height: 70px
+
+      :first-child
         @extend .imgHover
 
     &-info

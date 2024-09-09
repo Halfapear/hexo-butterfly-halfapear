@@ -1,119 +1,174 @@
-// #recent-posts
-//   & > .recent-post-item:not(:first-child)
-//     margin-top: 20px
+$indexLayout = hexo-config('index_layout') || 1
+$indexEnable = hexo-config('cover.index_enable')
 
-//   & > .recent-post-item
-//     @extend .cardHover
-//     display: flex
-//     flex-direction: row
-//     align-items: center
-//     overflow: hidden
-//     height: 18em
+#recent-posts
+  .recent-post-item
+    @extend .cardHover
+    position: relative
+    overflow: hidden
+    margin-bottom: 20px
 
-//     +maxWidth768()
-//       flex-direction: column
-//       height: auto
+    if $indexLayout == 6 || ($indexLayout == 7)
+      display: inline-block
+      width: calc(100% / 2 - 8px)
+      vertical-align: top
 
-//     &:hover
-//       img.post_bg
-//         transform: scale(1.1)
+      +maxWidth768()
+        width: 100%
 
-//     &.ads-wrap
-//       display: block !important
-//       height: auto !important
+      +minWidth2000()
+        width: calc(100% / 3 - 8px)
 
-//     .post_cover
-//       overflow: hidden
-//       width: 44%
-//       height: 100%
+    if $indexLayout == 1 || ($indexLayout == 2 || ($indexLayout == 3))
+      display: flex
+      flex-direction: row
+      align-items: center
+      height: 16.8em
 
-//       +maxWidth768()
-//         width: 100%
-//         height: 230px
+      +maxWidth768()
+        flex-direction: column
+        height: auto
 
-//       img.post_bg
-//         @extend .imgHover
+      +minWidth2000()
+        height: 18.8em
 
-//       &.right
-//         order: 1
+    &:hover
+      .post-bg
+        transform: scale(1.1)
 
-//         +maxWidth768()
-//           order: 0
+    &.ads-wrap
+      display: block !important
+      height: auto !important
 
-//     & >.recent-post-info
-//       padding: 0 40px
-//       width: 57%
+    .post_cover
+      overflow: hidden
 
-//       +maxWidth768()
-//         padding: 20px 20px 30px
-//         width: 100%
+      if ($indexLayout != 5 && ($indexLayout != 7))
+        +maxWidth768()
+          width: 100%
+          height: 230px
 
-//       &.no-cover
-//         width: 100%
+      if $indexLayout == 1 || ($indexLayout == 2 || ($indexLayout == 3))
+        width: 42%
+        height: 100%
 
-//         +maxWidth768()
-//           padding: 30px 20px
+        &.right
+          order: 1
 
-//       & > .article-title
-//         @extend .limit-more-line
-//         color: var(--text-highlight-color)
-//         font-size: 1.72em
-//         line-height: 1.4
-//         transition: all .2s ease-in-out
-//         -webkit-line-clamp: 2
+          +maxWidth768()
+            order: 0
 
-//         +maxWidth768()
-//           font-size: 1.43em
+      if $indexLayout == 4 || ($indexLayout == 5 || ($indexLayout == 6 || ($indexLayout == 7)))
+        width: 100%
 
-//         &:hover
-//           color: $text-hover
+        if ($indexLayout == 5 || ($indexLayout == 7))
+          height: 17em
+        else
+          height: 230px
 
-//       & > .article-meta-wrap
-//         margin: 6px 0
-//         color: $theme-meta-color
-//         font-size: 90%
+      if ($indexLayout == 5 || ($indexLayout == 7)) && $indexEnable
+        &:before
+          position: absolute
+          z-index: 1
+          width: 100%
+          height: 100%
+          background-color: rgba(18, 18, 18, .4)
+          content: ''
+          backdrop-filter: blur(3px)
 
-//         & > .post-meta-date
-//           cursor: default
+      .post-bg
+        z-index: -4
+        @extend .imgHover
 
-//         .sticky
-//           color: $sticky-color
+    & >.recent-post-info
+      +maxWidth768()
+        padding: 20px 20px 30px
+        width: 100%
 
-//         i
-//           margin: 0 4px 0 0
+      if $indexLayout == 1 || ($indexLayout == 2 || ($indexLayout == 3))
+        padding: 0 40px
+        width: 58%
 
-//         .fa-spinner
-//           margin: 0
+      if $indexLayout == 4 || ($indexLayout == 5 || ($indexLayout == 6 || ($indexLayout == 7)))
+        padding: 30px 30px 25px
 
-//         .article-meta-label
-//           if hexo-config('post_meta.page.label')
-//             padding-right: 4px
-//           else
-//             display: none
+      if ($indexLayout == 5 || ($indexLayout == 7)) && $indexEnable
+        &:not(.no-cover)
+          position: absolute
+          top: 50%
+          z-index: 2
+          width: 100%
+          color: var(--text-highlight-color)
+          transform: translateY(-50%)
+          --text-highlight-color: rgba(255, 255, 255, 1)
+          --card-meta: rgba(255, 255, 255, .7)
 
-//         .article-meta-separator
-//           margin: 0 6px
+      &.no-cover
+        +maxWidth768()
+          padding: 30px 20px
 
-//         .article-meta-link
-//           margin: 0 4px
+        if $indexLayout == 1 || ($indexLayout == 2 || ($indexLayout == 3))
+          width: 100%
 
-//         if hexo-config('post_meta.page.date_format') == 'relative'
-//           time
-//             display: none
+        if $indexLayout == 4 || ($indexLayout == 5 || ($indexLayout == 6 || ($indexLayout == 7)))
+          padding: 35px 30px
 
-//         a
-//           color: $theme-meta-color
+      & > .article-title
+        @extend .limit-more-line
+        color: var(--text-highlight-color)
+        font-size: 1.55em
+        line-height: 1.4
+        transition: all .2s ease-in-out
+        -webkit-line-clamp: 2
 
-//           &:hover
-//             color: $text-hover
-//             text-decoration: underline
+        .sticky
+          margin-right: 10px
+          color: $sticky-color
+          transform: rotate(45deg)
 
-//       & > .content
-//         @extend .limit-more-line
-//         -webkit-line-clamp: 2
+        +maxWidth768()
+          font-size: 1.43em
 
+        &:hover
+          color: $text-hover
 
-if hexo-config('index_card_style') == 'slidecard'
-  @import './_index_card_style/slidecard'
-else if hexo-config('index_card_style') == 'multicard'
-  @import './_index_card_style/multicard'
+      & > .article-meta-wrap
+        margin: 6px 0
+        color: var(--card-meta)
+        font-size: .9em
+
+        & > .post-meta-date
+          cursor: default
+
+        i
+          margin: 0 4px 0 0
+
+        .fa-spinner
+          margin: 0
+
+        .article-meta-label
+          if hexo-config('post_meta.page.label')
+            padding-right: 4px
+          else
+            display: none
+
+        .article-meta-separator
+          margin: 0 6px
+
+        .article-meta-link
+          margin: 0 4px
+
+        if hexo-config('post_meta.page.date_format') == 'relative'
+          time
+            display: none
+
+        a
+          color: var(--card-meta)
+
+          &:hover
+            color: $text-hover
+            text-decoration: underline
+
+      & > .content
+        @extend .limit-more-line
+        -webkit-line-clamp: 2

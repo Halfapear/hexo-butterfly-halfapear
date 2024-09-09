@@ -31,7 +31,7 @@ script.
         for (let i = 0; i < array.length; i++) {
           result += '<div class=\'aside-list-item\'>'
 
-          if (!{theme.newest_comments.avatar}) {
+          if (!{theme.aside.card_newest_comments.avatar}) {
             const name = '!{theme.lazyload.enable ? "data-lazy-src" : "src"}'
             result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
           }
@@ -46,7 +46,7 @@ script.
       }
 
       let $dom = document.querySelector('#card-newest-comments .aside-list')
-      $dom.innerHTML= result
+      $dom && ($dom.innerHTML= result)
       window.lazyLoadInstance && window.lazyLoadInstance.update()
       window.pjax && window.pjax.refresh($dom)
     }
@@ -63,7 +63,7 @@ script.
         },
       }
 
-      fetch(`${serverURL}/1.1/classes/Comment?limit=!{theme.newest_comments.limit}&order=-createdAt`,settings)
+      fetch(`${serverURL}/1.1/classes/Comment?limit=!{theme.aside.card_newest_comments.limit}&order=-createdAt`,settings)
         .then(response => response.json())
         .then(data => {
           const valineArray = data.results.map(function (e) {
@@ -75,17 +75,17 @@ script.
               'date': e.updatedAt,
             }
           })
-          saveToLocal.set('valine-newest-comments', JSON.stringify(valineArray), !{theme.newest_comments.storage}/(60*24))
+          btf.saveToLocal.set('valine-newest-comments', JSON.stringify(valineArray), !{theme.aside.card_newest_comments.storage}/(60*24))
           generateHtml(valineArray)
         }).catch(e => {
           const $dom = document.querySelector('#card-newest-comments .aside-list')
-          $dom.innerHTML= "!{_p('aside.card_newest_comments.error')}"
+          $dom.textContent= "!{_p('aside.card_newest_comments.error')}"
         }) 
     }
 
     const newestCommentInit = () => {
       if (document.querySelector('#card-newest-comments .aside-list')) {
-        const data = saveToLocal.get('valine-newest-comments')
+        const data = btf.saveToLocal.get('valine-newest-comments')
         if (data) {
           generateHtml(JSON.parse(data))
         } else {
@@ -95,5 +95,5 @@ script.
     }
 
     newestCommentInit()
-    document.addEventListener('pjax:complete', newestCommentInit)
+    btf.addGlobalFn('pjaxComplete', newestCommentInit, 'valine_newestComment')
   })
