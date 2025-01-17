@@ -1,3 +1,5 @@
+# 这是一个完整的注释行
+
 # Hexo Configuration
 ## Docs: https://hexo.io/docs/configuration.html
 ## Source: https://github.com/hexojs/hexo/
@@ -40,16 +42,22 @@ external_link:
   exclude: ''
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
 relative_link: false
 future: true
 syntax_highlighter: highlight.js
+# 代码高亮
 highlight:
   line_number: true
-  auto_detect: false
+  auto_detect: true
   tab_replace: ''
   wrap: true
   hljs: false
+#下面是多加的
+  theme: darker  # 设置高亮主题为 darker
+  highlight_copy: true
+  highlight_shrink: false #代碼框不展開，需點擊 '>' 打開
+
 prismjs:
   preprocess: true
   line_number: true
@@ -91,7 +99,7 @@ pagination_dir: page
 ## include:/exclude: options only apply to the 'source/' folder
 include:
 exclude:
-ignore:
+ignore:highlight_theme:
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
@@ -102,3 +110,11 @@ theme: butterfly
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: ''
+
+# Avatar settings
+avatar:
+  enable: true
+  url: /picture/photo.png # 替换为你的头像图片链接
+  rounded: true  # 是否将头像设置为圆形，true 为圆形，false 为方形
+  size: 120  # 头像的尺寸，单位是像素
+
